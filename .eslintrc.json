@@ -1,0 +1,7 @@
+{
+  "extends": ["eslint:recommended", "next/core-web-vitals", "prettier"],
+  "rules": {
+    "no-unused-vars": 0,
+    "react/no-unknown-property": ["error", { "ignore": ["text-sm"] }]
+  }
+}
