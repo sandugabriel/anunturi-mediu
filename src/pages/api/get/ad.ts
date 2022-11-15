@@ -1,19 +1,23 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
+// import { PrismaClient } from '@prisma/client';
 import prisma from '@/lib/prisma';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { email }: { email: string } = req.body;
+    const { adId } = req.body;
+    console.log(adId);
+
     try {
-      await prisma.user.update({
+      const ad = await prisma.advertisment.findUnique({
         where: {
-          email: email,
+          id: adId,
         },
-        data: {
-          emailVerified: new Date(),
+        select: {
+          company_name: true,
+          text: true,
         },
       });
-      return res.status(200).json({ message: 'Email verified successfully' });
+      return res.status(200).json({ message: ad });
     } catch (error) {
       return res.status(500).json({ message: error });
     }

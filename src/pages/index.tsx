@@ -1,49 +1,49 @@
-import FadeUp from '@/components/FadeUp';
-import HomeFirstContainer from '@/components/HomeFirstContainer';
-import HomeSecondContainer from '@/components/HomeSecondContainer';
-import HomeThirdContainer from '@/components/HomeThirdContainer';
+import AdComponent from '@/components/AdComponent';
 import Navbar from '@/components/Navbar';
-import { useSession } from 'next-auth/react';
+
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 
 const HomePage = () => {
-  const { data: session } = useSession();
+  const [ads, setAds] = useState([]);
+  useEffect(() => {
+    fetch('/api/get/ads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(async (res) => {
+      const result = await res.json();
+      console.log(result);
+      setAds(result.message);
+    });
+  }, []);
+
+  const listAds = ads.map((ad, index) => {
+    return (
+      <AdComponent
+        company={ad.company_name}
+        text={ad.text}
+        date={new Date(ad.createdAt).toString()}
+        url={`${process.env.NEXTAUTH_URL}/ads/${ad.id}`}
+        key={index}
+      />
+    );
+  });
+
   return (
     <>
       <Head>
-        <title>Rafflr</title>
+        <title>Anunturi de mediu</title>
         <meta name="description" content="Rafflr Web Home Page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="">
-        <Navbar />
-
-        {session ? (
-          <div className="flex flex-col">
-            <FadeUp>
-              <HomeFirstContainer />
-            </FadeUp>
-            <FadeUp>
-              <HomeSecondContainer />
-            </FadeUp>
-            <FadeUp>
-              <HomeThirdContainer />
-            </FadeUp>
-          </div>
-        ) : (
-          <div className="flex flex-col">
-            <FadeUp>
-              <HomeFirstContainer />
-            </FadeUp>
-            <FadeUp>
-              <HomeSecondContainer />
-            </FadeUp>
-            <FadeUp>
-              <HomeThirdContainer />
-            </FadeUp>
-          </div>
-        )}
-      </div>
+      <Navbar />
+      <section className="body-font text-gray-600">
+        <div className="container mx-auto px-5 py-24">
+          <div className="-m-4 flex flex-wrap">{listAds}</div>
+        </div>
+      </section>
     </>
   );
 };

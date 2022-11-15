@@ -4,20 +4,21 @@ import prisma from '@/lib/prisma';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { id } = req.body;
     try {
-      const raffle = await prisma.raffle.update({
-        where: {
-          id: id
+      const ads = await prisma.advertisment.findMany({
+        where: { isPaid: true },
+        select: {
+          id: true,
+          name: true,
+          company_name: true,
+          text: true,
+          createdAt: true,
         },
-        data: {
-          draft: false
-        }
-      })
-
-      return res.status(200).json({ message: raffle });
+      });
+      console.log(ads)
+      return res.status(200).json({ message: ads });
     } catch (error) {
-      return res.status(422).json({ message: error });
+      return res.status(500).json({ message: error });
     }
   } else {
     res.setHeader('Allow', 'POST');
