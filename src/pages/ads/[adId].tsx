@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 
 const Ad = () => {
   const [text, setText] = useState('');
@@ -28,16 +29,6 @@ const Ad = () => {
   }, []);
 
   return (
-    // <div className="flex flex-col items-center overflow-clip">
-    //   <Head>
-    //     <title>Anunturi de mediu</title>
-    //     <meta name="description" content="Rafflr Web App" />
-    //   </Head>
-    //   <div className="flex flex-col items-center justify-center">
-    //     <div className="text-2xl font-bold">Anunt de mediu {title}</div>
-    //     <div className="text-lg font-normal">{text}</div>
-    //   </div>
-    // </div>
 
     <section className="body-font text-gray-600">
       <div className="container mx-auto flex flex-col items-center justify-center px-5 py-24">

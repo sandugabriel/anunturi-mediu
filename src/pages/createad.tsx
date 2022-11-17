@@ -10,6 +10,9 @@ export default function AdHome() {
   const router = useRouter();
   const [price, setPrice] = useState(0);
   const [isCalculated, setIsCalculated] = useState(false);
+  const today = new Date()
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 7)
 
   const formik = useFormik({
     initialValues: {
@@ -57,14 +60,30 @@ export default function AdHome() {
         },
       })
         .then((res) => {
-          console.log(res);
-          console.log('form submitted');
-          console.log(values);
+          console.log(res)
+          fetch('/api/sendemails', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: values.name,
+              company_name: values.company_name,
+              address: values.address,
+              email: values.email,
+              text: values.text,
+              price: price,
+              today: today,
+              tomorrow: tomorrow
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
           router.push('/');
         })
         .catch((error) => {
           console.log(error);
         });
+
+      
     },
   });
 

@@ -33,7 +33,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/utils/cloudinary.ts"  ],
+, "src/utils/cloudinary.ts", "src/pages/api/sendemails.js"  ],
   "exclude": [
     "node_modules"
   ]
