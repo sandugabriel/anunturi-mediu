@@ -46,10 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         from: 'sandugabriel97@gmail.com', // your website email address here
         subject: 'Anunt Piata Severineana',
         templateId: 'd-6b8e572ecb3a4287a810278403cfd848',
-        personalizations: [{
-          to: values.email,
-          dynamicTemplateData: template_data
-        }]
+        
+        to: values.email,
+        dynamicTemplateData: template_data
+        
         
       });
     } catch (error) {
