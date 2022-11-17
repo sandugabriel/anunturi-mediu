@@ -1,4 +1,4 @@
-import sendgrid from '@sendgrid/mail';
+import sendgrid, { MailDataRequired } from '@sendgrid/mail';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -31,21 +31,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
+      const template_data = {
+        id: id,
+        today: today,
+        tomorrow: tomorrow,
+        companyName: values.company_name,
+        name: values.name,
+        email: values.email,
+        product: 'Anunt de mediu Online',
+        price: values.price,
+      };
       await sendgrid.send({
-        to: values.email, // Your email where you'll receive emails
+         // Your email where you'll receive emails
         from: 'sandugabriel97@gmail.com', // your website email address here
         subject: 'Anunt Piata Severineana',
         templateId: 'd-6b8e572ecb3a4287a810278403cfd848',
-        dynamic_template_data: {
-          id: id,
-          today: today,
-          tomorrow: tomorrow,
-          companyName: values.company_name,
-          name: values.name,
-          email: values.email,
-          product: 'Anunt de mediu Online',
-          price: values.price,
-        },
+        personalizations: [{
+          to: values.email,
+          dynamicTemplateData: template_data
+        }]
+        
       });
     } catch (error) {
       // console.log(error);
