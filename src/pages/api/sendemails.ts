@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .substring(1);
     try {
       await sendgrid.send({
-        to: 'piataseverineana@gmail.com', // Your email where you'll receive emails
+        to: 'sandugabriel97@gmail.com', // Your email where you'll receive emails
         from: 'sandugabriel97@gmail.com', // your website email address here
         subject: 'Anunt de mediu nou!',
         html: `
@@ -24,7 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       <p>Text anunt: ${values.text}</p>
       <p>Pretul propus: ${values.price}</p>
       `,
-      });
+      }).then((res) => {
+        console.log(res)
+      })
     } catch (error) {
       // console.log(error);
       return res.status(error.statusCode || 500).json({ error: error.message });
@@ -43,17 +45,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
       await sendgrid.send({
          // Your email where you'll receive emails
+        to: values.email,
         from: 'sandugabriel97@gmail.com', // your website email address here
         subject: 'Anunt Piata Severineana',
         templateId: 'd-6b8e572ecb3a4287a810278403cfd848',
-        
-        to: values.email,
         dynamicTemplateData: template_data
-        
-        
       });
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
 
